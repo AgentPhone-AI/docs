@@ -54,7 +54,7 @@ nav {
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* ── Scrollbar ──────────────────────────────────────────── */
+/* ── Scrollbar (auto-hide) ──────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -63,9 +63,13 @@ nav {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.3);
+  background: transparent;
   border-radius: 99px;
+  transition: background 0.2s ease;
 }
-::-webkit-scrollbar-thumb:hover {
+*:hover::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+}
+*:hover::-webkit-scrollbar-thumb:hover {
   background: rgba(16, 185, 129, 0.5);
 }
