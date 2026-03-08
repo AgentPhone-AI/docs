@@ -15,7 +15,7 @@ List all conversations, sorted by most recent activity.
 
 <CodeGroup>
 ```bash Request
-curl https://api.agentphone.dev/v1/conversations \
+curl https://api.agentphone.to/v1/conversations \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -47,7 +47,7 @@ Get a conversation with its recent messages.
 
 <CodeGroup>
 ```bash Request
-curl https://api.agentphone.dev/v1/conversations/conv_abc123 \
+curl https://api.agentphone.to/v1/conversations/conv_abc123 \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -101,7 +101,7 @@ Store custom metadata on conversations to persist context across messages. This 
 
 <CodeGroup>
 ```bash Request
-curl -X PATCH https://api.agentphone.dev/v1/conversations/conv_abc123 \
+curl -X PATCH https://api.agentphone.to/v1/conversations/conv_abc123 \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

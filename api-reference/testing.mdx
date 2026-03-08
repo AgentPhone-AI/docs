@@ -47,7 +47,7 @@ Use the test webhook endpoint to verify your webhook handler works correctly:
 
 <CodeGroup>
 ```bash Test your webhook
-curl -X POST https://api.agentphone.dev/v1/webhooks/test \
+curl -X POST https://api.agentphone.to/v1/webhooks/test \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -149,7 +149,7 @@ Monitor webhook delivery status in the dashboard or via API:
 
 <CodeGroup>
 ```bash Get delivery history
-curl https://api.agentphone.dev/v1/webhooks/deliveries \
+curl https://api.agentphone.to/v1/webhooks/deliveries \
   -H "Authorization: Bearer YOUR_API_KEY"
 
 # Response shows delivery attempts, status, and errors

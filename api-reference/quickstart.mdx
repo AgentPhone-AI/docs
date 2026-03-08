@@ -18,7 +18,7 @@ Get up and running with the agent-first approach in under 2 minutes:
 Create an AI agent that will handle your phone interactions:
 
 ```bash
-curl -X POST https://api.agentphone.dev/v1/agents \
+curl -X POST https://api.agentphone.to/v1/agents \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "Support Bot", "description": "Handles customer support"}'
@@ -41,7 +41,7 @@ curl -X POST https://api.agentphone.dev/v1/agents \
 Provision a phone number for your agent:
 
 ```bash
-curl -X POST https://api.agentphone.dev/v1/numbers \
+curl -X POST https://api.agentphone.to/v1/numbers \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"country": "US", "agentId": "agent_123"}'
@@ -65,7 +65,7 @@ curl -X POST https://api.agentphone.dev/v1/numbers \
 Register a webhook to receive messages and voice transcripts:
 
 ```bash
-curl -X POST https://api.agentphone.dev/v1/webhooks \
+curl -X POST https://api.agentphone.to/v1/webhooks \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"url": "https://your-server.com/webhook"}'
