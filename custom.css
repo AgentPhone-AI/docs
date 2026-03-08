@@ -1,0 +1,71 @@
+/* ── Typography ─────────────────────────────────────────── */
+h1 {
+  letter-spacing: -0.03em;
+}
+h2 {
+  letter-spacing: -0.02em;
+}
+h3 {
+  letter-spacing: -0.015em;
+}
+
+/* ── Code blocks ────────────────────────────────────────── */
+pre {
+  border-radius: 10px !important;
+}
+
+code {
+  border-radius: 4px !important;
+}
+
+/* ── Cards ──────────────────────────────────────────────── */
+a[class*="CardLink"],
+div[class*="CardLink"] {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+a[class*="CardLink"]:hover,
+div[class*="CardLink"]:hover {
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ── Steps connector line ───────────────────────────────── */
+[class*="StepConnector"] {
+  background: linear-gradient(to bottom, #10B981, #34D399) !important;
+  opacity: 0.4;
+}
+
+/* ── Hero frame ─────────────────────────────────────────── */
+[class*="FrameContainer"] img,
+figure img {
+  border-radius: 12px;
+}
+
+/* ── Callout polish ─────────────────────────────────────── */
+[class*="Callout"] {
+  border-radius: 8px !important;
+}
+
+/* ── Navbar ─────────────────────────────────────────────── */
+nav {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.5);
+}

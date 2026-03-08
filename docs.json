@@ -8,6 +8,10 @@
     "dark": "#059669"
   },
   "favicon": "/favicon.svg",
+  "css": "/custom.css",
+  "background": {
+    "style": "gradient"
+  },
   "font": {
     "headings": { "family": "Outfit" },
     "body": { "family": "DM Sans" }

@@ -3,26 +3,51 @@ title: 'Quick Start'
 description: 'Get up and running with Agent Phone API in under 2 minutes'
 ---
 
-## Quick Start
-
-Get up and running with the agent-first approach in under 2 minutes:
+Get up and running in under 2 minutes:
 
 ### Step 1: Get your API key
 
-<Card title="Create a project" icon="plus" href="/setup">
-  Create a project to get your API key, or use the one you already have.
+<Card title="Create a project" icon="key" href="https://agentphone.to">
+  Sign up at agentphone.to and grab your API key from the dashboard.
 </Card>
 
 ### Step 2: Create an agent
 
-Create an AI agent that will handle your phone interactions:
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST https://api.agentphone.to/v1/agents \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"name": "Support Bot", "description": "Handles customer support"}'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    import { AgentPhone } from 'agentphone';
 
-```bash
-curl -X POST https://api.agentphone.to/v1/agents \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Support Bot", "description": "Handles customer support"}'
-```
+    const client = new AgentPhone({ apiKey: process.env.AGENTPHONE_API_KEY });
+
+    const agent = await client.agents.create({
+      name: 'Support Bot',
+      description: 'Handles customer support',
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    from agentphone import AgentPhone
+    import os
+
+    client = AgentPhone(api_key=os.environ['AGENTPHONE_API_KEY'])
+
+    agent = client.agents.create(
+        name='Support Bot',
+        description='Handles customer support',
+    )
+    ```
+  </Tab>
+</Tabs>
 
 <CodeGroup>
 ```json Response
@@ -38,14 +63,29 @@ curl -X POST https://api.agentphone.to/v1/agents \
 
 ### Step 3: Give it a phone number
 
-Provision a phone number for your agent:
-
-```bash
-curl -X POST https://api.agentphone.to/v1/numbers \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"country": "US", "agentId": "agent_123"}'
-```
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST https://api.agentphone.to/v1/numbers \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"country": "US", "agentId": "agent_123"}'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const number = await client.numbers.buy({
+      country: 'US',
+      agentId: agent.id,
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    number = client.numbers.buy(country='US', agent_id=agent.id)
+    ```
+  </Tab>
+</Tabs>
 
 <CodeGroup>
 ```json Response
@@ -64,12 +104,28 @@ curl -X POST https://api.agentphone.to/v1/numbers \
 
 Register a webhook to receive messages and voice transcripts:
 
-```bash
-curl -X POST https://api.agentphone.to/v1/webhooks \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://your-server.com/webhook"}'
-```
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST https://api.agentphone.to/v1/webhooks \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"url": "https://your-server.com/webhook"}'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const webhook = await client.webhooks.set({
+      url: 'https://your-server.com/webhook',
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    webhook = client.webhooks.set(url='https://your-server.com/webhook')
+    ```
+  </Tab>
+</Tabs>
 
 <CodeGroup>
 ```json Response
@@ -84,7 +140,11 @@ curl -X POST https://api.agentphone.to/v1/webhooks \
 ```
 </CodeGroup>
 
-### Step 5: Handle agent.message events with context
+<Tip>
+  Save the `secret` from the response — you'll use it to verify webhook signatures and keep your endpoint secure.
+</Tip>
+
+### Step 5: Handle agent.message events
 
 When someone texts or calls your number, you'll receive an `agent.message` event with full conversation context:
 
@@ -92,7 +152,7 @@ When someone texts or calls your number, you'll receive an `agent.message` event
 ```json Incoming webhook payload
 {
   "event": "agent.message",
-  "channel": "sms",  // or "voice"
+  "channel": "sms",
   "agentId": "agent_123",
   "data": {
     "conversationId": "conv_abc",
@@ -101,8 +161,8 @@ When someone texts or calls your number, you'll receive an `agent.message` event
     "message": "Hey, I need help!",
     "direction": "inbound"
   },
-  "conversationState": { "customerName": "John" },  // Your stored metadata
-  "recentHistory": [  // Last 10 messages for AI context
+  "conversationState": { "customerName": "John" },
+  "recentHistory": [
     { "content": "Previous message", "direction": "inbound", "channel": "sms", "at": "..." }
   ]
 }
@@ -123,4 +183,3 @@ When someone texts or calls your number, you'll receive an `agent.message` event
     Set up webhook handlers
   </Card>
 </CardGroup>
-
