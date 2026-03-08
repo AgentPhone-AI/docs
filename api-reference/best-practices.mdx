@@ -5,73 +5,107 @@ description: 'Follow these best practices to build reliable integrations'
 
 ## Best Practices
 
-Follow these best practices to build reliable integrations with the Agent Phone API.
+Follow these best practices to build reliable, secure integrations with the AgentPhone API.
 
 ## Security
 
-<Checklist>
-  <ChecklistItem checked>
-    **Never expose API keys** in client-side code or public repositories. Use environment variables.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Always verify webhook signatures** to ensure requests are from Agent Phone.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Use HTTPS** for webhook endpoints in production.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Rotate API keys** periodically and revoke unused keys.
-  </ChecklistItem>
-</Checklist>
+**Never expose your API key in client-side code or public repositories.** Store it in environment variables and inject it server-side only. If a key is compromised, revoke it immediately from the dashboard and issue a new one.
+
+**Always verify webhook signatures.** Every inbound webhook includes an `X-Webhook-Signature` header — an HMAC-SHA256 hash of the request body signed with your webhook secret. Verify it before processing:
+
+```python
+import hmac, hashlib
+
+def verify(body: bytes, signature: str, secret: str) -> bool:
+    expected = "sha256=" + hmac.new(
+        secret.encode(), body, hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
+```
+
+**Use HTTPS for all webhook endpoints.** HTTP endpoints will be rejected in production.
+
+**Rotate API keys periodically.** Treat your API key like a password — rotate it if you suspect exposure and avoid sharing it across services.
+
+---
 
 ## Webhook Reliability
 
-<Checklist>
-  <ChecklistItem checked>
-    **Return 200 OK quickly** - process webhooks asynchronously if needed.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Handle duplicate deliveries** - use `X-Webhook-ID` for idempotency.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Implement retry logic** - webhooks are automatically retried, but handle failures gracefully.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Log all webhook deliveries** for debugging and audit purposes.
-  </ChecklistItem>
-</Checklist>
+**Return `200 OK` as fast as possible.** If your webhook handler takes more than a few seconds, AgentPhone may time out and retry. Offload heavy processing to a background queue and acknowledge immediately:
+
+```python
+@app.post("/webhook")
+async def webhook(request: Request):
+    payload = await request.json()
+    background_tasks.add_task(process_event, payload)
+    return Response(status_code=200)
+```
+
+**Handle duplicate deliveries.** Webhooks are retried on failure, so you may receive the same event more than once. Use the `X-Webhook-ID` header as an idempotency key:
+
+```python
+processed = set()  # use Redis or a database in production
+
+def handle(request):
+    wid = request.headers["X-Webhook-ID"]
+    if wid in processed:
+        return 200  # already handled
+    processed.add(wid)
+    # ... process event
+```
+
+**For voice calls, return a response quickly.** The caller is waiting — process the transcript and return your `text` response within 2–3 seconds to avoid dead air.
+
+**Log all deliveries.** Store the full payload, timestamp, and `X-Webhook-ID` for each event. This makes debugging missed events and failures much easier.
+
+---
 
 ## Performance
 
-<Checklist>
-  <ChecklistItem checked>
-    **Use webhooks instead of polling** for real-time updates.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Use cursor-based pagination** (before/after) for time-ordered data.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Cache frequently accessed data** like phone number lists.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Respect rate limits** - implement exponential backoff for retries.
-  </ChecklistItem>
-</Checklist>
+**Use webhooks instead of polling.** Polling the API for new messages wastes requests and adds latency. Register a webhook once and receive events the moment they arrive.
+
+**Use `before`/`after` cursor pagination for large datasets.** When fetching call history or conversations, use cursor-based pagination rather than offset — it's consistent even when new records are added between pages:
+
+```bash
+GET /v1/calls?limit=50&before=call_xyz
+```
+
+**Cache phone number and agent lists.** These rarely change — cache them for the lifetime of your process or invalidate on write, rather than fetching on every request.
+
+**Respect rate limits with exponential backoff.** If you receive a `429 Too Many Requests`, back off before retrying:
+
+```python
+import time, random
+
+def request_with_backoff(fn, retries=5):
+    for attempt in range(retries):
+        try:
+            return fn()
+        except RateLimitError:
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            time.sleep(wait)
+    raise Exception("Max retries exceeded")
+```
+
+---
 
 ## Error Handling
 
-<Checklist>
-  <ChecklistItem checked>
-    **Always check response status** before processing data.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Implement retry logic** for transient errors (429, 500, 502).
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Log errors** with context for debugging.
-  </ChecklistItem>
-  <ChecklistItem checked>
-    **Handle validation errors** gracefully and show user-friendly messages.
-  </ChecklistItem>
-</Checklist>
+**Check the HTTP status before processing any response.** A `2xx` response means success. `4xx` means a problem with your request; `5xx` means a server-side issue.
 
+**Retry on transient errors.** `429`, `500`, `502`, and `503` responses are temporary — retry with backoff. Do not retry `400` or `404` errors, as they indicate a bad request.
+
+**Include context in error logs.** Log the status code, error message, request ID (from the response body), and enough context to reproduce the issue:
+
+```python
+try:
+    result = client.calls.make(agent_id=..., to_number=...)
+except AgentPhoneError as e:
+    logger.error("Call failed", extra={
+        "status": e.status,
+        "message": e.message,
+        "agent_id": agent_id,
+    })
+```
+
+**Show user-friendly messages for validation errors.** `422 Unprocessable Entity` responses include a `details` array explaining which fields failed. Surface these to your users rather than showing a generic error.

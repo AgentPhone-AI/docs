@@ -8,6 +8,10 @@
     "dark": "#059669"
   },
   "favicon": "/favicon.svg",
+  "font": {
+    "headings": { "family": "Outfit" },
+    "body": { "family": "DM Sans" }
+  },
   "navigation": {
     "tabs": [
       {
