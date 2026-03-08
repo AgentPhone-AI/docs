@@ -1,78 +1,56 @@
 ---
-title: "Agent Phone API Documentation"
-description: "A simple API to provision phone numbers, receive SMS messages, and handle voice calls with AI agents"
+title: "AgentPhone"
+description: "Give your AI agents real phone numbers, SMS, and voice calls"
 ---
 
-## Welcome
+## Welcome to AgentPhone
 
-Agent Phone lets you programmatically get phone numbers, receive SMS messages, and handle voice calls. We handle all the complexity of phone number provisioning, message delivery, and voice transcription, so you can focus on building your AI agent application.
+AgentPhone lets you give AI agents real phone capabilities — provision numbers, send and receive SMS, and handle voice calls with full conversation context. We handle the telecom complexity so you can focus on building your agent.
 
 <CardGroup cols={3}>
-  <Card title="Get Numbers" icon="phone" href="/api-reference/numbers">
-    Provision SMS and Voice-enabled phone numbers instantly
+  <Card title="Phone Numbers" icon="phone" href="/api-reference/numbers">
+    Provision US, CA, and GB numbers instantly
   </Card>
-  <Card title="Receive SMS" icon="message" href="/api-reference/conversations">
-    Messages are stored and available via API
+  <Card title="SMS" icon="message" href="/api-reference/conversations">
+    Receive and track inbound SMS with threaded conversations
   </Card>
   <Card title="Voice Calls" icon="phone-volume" href="/api-reference/calls">
-    Real-time transcription and AI agent integration
+    Make outbound calls with built-in AI or your own webhook
   </Card>
 </CardGroup>
 
-## Quick Start
+## Get started
 
-Get up and running in under 2 minutes:
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start"
+    icon="rocket"
+    href="/api-reference/quickstart"
+  >
+    Create an agent, get a number, and handle your first call in under 2 minutes.
+  </Card>
+  <Card
+    title="MCP for AI Tools"
+    icon="plug"
+    href="/ai-tools/claude-code"
+  >
+    Use AgentPhone directly from Claude Code, Cursor, or Windsurf via MCP.
+  </Card>
+</CardGroup>
 
-<Card
-  title="Quick Start Guide"
-  icon="rocket"
-  href="/api-reference/quickstart"
-  horizontal
->
-  Follow our step-by-step guide to create your first agent and provision a phone number.
-</Card>
-
-## Core Features
+## Core concepts
 
 <CardGroup cols={2}>
   <Card title="Agents" icon="robot" href="/api-reference/agents">
-    Create AI personas that handle phone interactions
+    Logical entities that own phone numbers and handle interactions
   </Card>
   <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks">
-    Receive real-time notifications with full conversation context
+    Receive real-time events with full conversation context
   </Card>
-  <Card title="Conversations" icon="comments" href="/api-reference/conversations">
-    Track threaded communications with conversation state
-  </Card>
-  <Card title="Voice Calls" icon="phone-volume" href="/api-reference/calls">
-    Real-time transcription and text-to-speech responses
-  </Card>
-</CardGroup>
-
-## Documentation
-
-<CardGroup cols={2}>
-  <Card title="Authentication" icon="key" href="/api-reference/authentication">
-    Learn how to authenticate your API requests
+  <Card title="Conversation Calls" icon="waveform-lines" href="/api-reference/calls">
+    Let the built-in LLM handle calls autonomously — no webhook needed
   </Card>
   <Card title="Error Handling" icon="triangle-exclamation" href="/api-reference/error-handling">
-    Understand error responses and best practices
-  </Card>
-  <Card title="Code Examples" icon="code" href="/api-reference/code-examples">
-    Complete integration examples in multiple languages
-  </Card>
-  <Card title="Best Practices" icon="check-circle" href="/api-reference/best-practices">
-    Follow these guidelines for reliable integrations
+    Understand error responses and retry behavior
   </Card>
 </CardGroup>
-
-## Need Help?
-
-<Card
-  title="FAQ"
-  icon="question-circle"
-  href="/api-reference/faq"
-  horizontal
->
-  Find answers to common questions about the API
-</Card>
