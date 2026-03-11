@@ -1,0 +1,131 @@
+---
+title: "Claude Code"
+description: "Use AgentPhone from Claude Code and Claude Desktop via MCP"
+icon: "terminal"
+---
+
+Connect AgentPhone to Claude Code or Claude Desktop using the [Model Context Protocol](https://modelcontextprotocol.io). Once set up, Claude can buy phone numbers, make calls, read SMS conversations, and manage agents — all from natural language.
+
+## Prerequisites
+
+- An [AgentPhone API key](https://agentphone.to)
+- Claude Code CLI or Claude Desktop installed
+
+## Claude Code (CLI)
+
+Run this command to add the AgentPhone MCP server to your Claude Code config:
+
+```bash
+claude mcp add agentphone -e AGENTPHONE_API_KEY=your_api_key -- npx -y agentphone-mcp
+```
+
+Then start a session:
+
+```bash
+claude
+```
+
+<Check>
+  Run `/mcp` inside Claude Code to confirm `agentphone` appears as a connected server.
+</Check>
+
+## Claude Desktop
+
+Add the following to your Claude Desktop config file:
+
+<Tabs>
+  <Tab title="macOS">
+    File: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+    ```json
+    {
+      "mcpServers": {
+        "agentphone": {
+          "command": "npx",
+          "args": ["-y", "agentphone-mcp"],
+          "env": {
+            "AGENTPHONE_API_KEY": "your_api_key_here"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Windows">
+    File: `%APPDATA%\Claude\claude_desktop_config.json`
+
+    ```json
+    {
+      "mcpServers": {
+        "agentphone": {
+          "command": "npx",
+          "args": ["-y", "agentphone-mcp"],
+          "env": {
+            "AGENTPHONE_API_KEY": "your_api_key_here"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Restart Claude Desktop after saving.
+
+## What you can do
+
+Once connected, just ask Claude in plain language:
+
+```text
+Buy me a US phone number and attach it to a new agent called "Support Bot"
+```
+
+```text
+Call +14155551234 and have a conversation about collecting customer feedback.
+Use a friendly tone and ask about their experience.
+```
+
+```text
+Show me the SMS conversations on my number +18571234567
+```
+
+```text
+Set my webhook to https://my-server.com/webhook with 10 messages of context
+```
+
+## Available tools
+
+| Tool | Description |
+|------|-------------|
+| `list_numbers` | List all phone numbers in your account |
+| `buy_number` | Purchase a new number (US, CA) |
+| `release_number` | Release a number back to the carrier pool |
+| `list_agents` | List all agents |
+| `create_agent` | Create a new agent |
+| `get_agent` | Get agent details and attached numbers |
+| `attach_number` | Attach a number to an agent |
+| `make_call` | Initiate an outbound call (forwarded to your webhook) |
+| `make_conversation_call` | Make an AI-driven call with a topic and no webhook needed |
+| `get_call` | Get call details and transcript |
+| `list_calls` | List recent calls |
+| `get_messages` | Get SMS messages for a number |
+| `list_conversations` | List SMS conversation threads |
+| `get_conversation` | Get a conversation with message history |
+| `get_webhook` | Get current webhook configuration |
+| `set_webhook` | Configure your webhook URL |
+| `delete_webhook` | Remove your webhook |
+
+## Example: Autonomous conversation call
+
+```text
+Create an agent called "Feedback Bot", buy it a US number,
+then call +14155551234 with the topic:
+"You are collecting feedback about our new product launch.
+Ask 3 questions and thank them at the end."
+```
+
+Claude will chain all the steps — create agent, buy number, attach it, and place the call.
+
+<Note>
+  `make_conversation_call` uses a built-in LLM for the conversation. No webhook required. Use `make_call` if you want to handle responses with your own server.
+</Note>

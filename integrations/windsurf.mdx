@@ -1,0 +1,94 @@
+---
+title: "Windsurf"
+description: "Use AgentPhone from Windsurf via MCP"
+icon: "water"
+---
+
+Connect AgentPhone to Windsurf's Cascade AI using the [Model Context Protocol](https://modelcontextprotocol.io). Once configured, Cascade can buy phone numbers, place calls, read SMS, and manage agents — all without leaving your editor.
+
+## Prerequisites
+
+- An [AgentPhone API key](https://agentphone.to)
+- Windsurf installed
+
+## Setup
+
+<Steps>
+  <Step title="Open the MCP config file">
+    Create or open the Windsurf MCP config at:
+
+    - **macOS/Linux:** `~/.codeium/windsurf/mcp_config.json`
+    - **Windows:** `%APPDATA%\Codeium\windsurf\mcp_config.json`
+  </Step>
+
+  <Step title="Add the AgentPhone server">
+    ```json
+    {
+      "mcpServers": {
+        "agentphone": {
+          "command": "npx",
+          "args": ["-y", "agentphone-mcp"],
+          "env": {
+            "AGENTPHONE_API_KEY": "your_api_key_here"
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Restart Windsurf">
+    Restart Windsurf to load the server. The AgentPhone tools will be available to Cascade automatically.
+
+    <Check>
+      You should see the MCP server listed as connected in Windsurf's Cascade panel.
+    </Check>
+  </Step>
+</Steps>
+
+## What you can do
+
+Ask Cascade in plain language:
+
+```text
+Create an agent called "Outreach Bot" and give it a US phone number
+```
+
+```text
+Call +14155551234 and have a conversation where you introduce our company
+and ask if they'd like to schedule a call with our team
+```
+
+```text
+Show me the transcript from the most recent call
+```
+
+```text
+Set my webhook to https://my-app.com/events with 15 messages of context
+```
+
+## Available tools
+
+| Tool | Description |
+|------|-------------|
+| `list_numbers` | List all phone numbers in your account |
+| `buy_number` | Purchase a new number (US, CA) |
+| `release_number` | Release a number permanently |
+| `list_agents` | List all agents |
+| `create_agent` | Create a new agent |
+| `get_agent` | Get agent details and attached numbers |
+| `attach_number` | Attach a number to an agent |
+| `make_call` | Make an outbound call routed to your webhook |
+| `make_conversation_call` | Make an AI-driven call without a webhook |
+| `get_call` | Get call details and full transcript |
+| `list_calls` | List recent calls |
+| `get_messages` | Get SMS messages for a number |
+| `list_conversations` | List SMS conversation threads |
+| `get_conversation` | Get a conversation with message history |
+| `get_webhook` | Get current webhook configuration |
+| `set_webhook` | Configure your webhook URL |
+| `delete_webhook` | Remove your webhook |
+
+<Note>
+  `make_conversation_call` uses AgentPhone's built-in LLM to hold an autonomous conversation based on the `topic` you provide. No server or webhook setup needed.
+</Note>

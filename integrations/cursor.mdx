@@ -1,0 +1,100 @@
+---
+title: "Cursor"
+description: "Use AgentPhone from Cursor via MCP"
+icon: "arrow-pointer"
+---
+
+Connect AgentPhone to Cursor using the [Model Context Protocol](https://modelcontextprotocol.io). Once configured, the Cursor AI can buy phone numbers, place calls, read SMS, and manage agents directly from your editor.
+
+## Prerequisites
+
+- An [AgentPhone API key](https://agentphone.to)
+- Cursor installed (version with MCP support)
+
+## Setup
+
+<Steps>
+  <Step title="Open MCP settings">
+    In Cursor, go to **Settings → Features → MCP Servers** and click **Add new MCP server**.
+  </Step>
+
+  <Step title="Configure the AgentPhone server">
+    Enter the following:
+
+    - **Name:** `agentphone`
+    - **Type:** `command`
+    - **Command:** `npx -y agentphone-mcp`
+    - **Environment variables:** `AGENTPHONE_API_KEY=your_api_key_here`
+
+    Or add it directly to `.cursor/mcp.json` in your project root:
+
+    ```json
+    {
+      "mcpServers": {
+        "agentphone": {
+          "command": "npx",
+          "args": ["-y", "agentphone-mcp"],
+          "env": {
+            "AGENTPHONE_API_KEY": "your_api_key_here"
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Restart Cursor">
+    Restart Cursor to load the new MCP server.
+
+    <Check>
+      The AgentPhone tools will appear in the Cursor MCP tool list when the server connects successfully.
+    </Check>
+  </Step>
+</Steps>
+
+## What you can do
+
+Ask the Cursor AI assistant in natural language:
+
+```text
+Buy me a phone number in the US and create an agent called "Sales Bot"
+```
+
+```text
+Call +14155551234 with the topic: "You are scheduling a demo for our product.
+Be concise and professional."
+```
+
+```text
+Show me all my recent calls and their transcripts
+```
+
+```text
+List the SMS conversations on my account
+```
+
+## Available tools
+
+| Tool | Description |
+|------|-------------|
+| `list_numbers` | List all phone numbers in your account |
+| `buy_number` | Purchase a new number (US, CA) |
+| `release_number` | Release a number permanently |
+| `list_agents` | List all agents |
+| `create_agent` | Create a new agent |
+| `get_agent` | Get agent details and attached numbers |
+| `attach_number` | Attach a number to an agent |
+| `make_call` | Make an outbound call routed to your webhook |
+| `make_conversation_call` | Make an AI-driven call without a webhook |
+| `get_call` | Get call details and full transcript |
+| `list_calls` | List recent calls |
+| `get_messages` | Get SMS messages for a number |
+| `list_conversations` | List SMS conversation threads |
+| `get_conversation` | Get a conversation with message history |
+| `get_webhook` | Get current webhook configuration |
+| `set_webhook` | Configure your webhook URL |
+| `delete_webhook` | Remove your webhook |
+
+<Note>
+  For `make_conversation_call`, provide a detailed `topic` — it becomes the AI's system prompt for the entire conversation. No webhook or server required.
+</Note>

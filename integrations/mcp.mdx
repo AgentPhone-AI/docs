@@ -1,0 +1,63 @@
+---
+title: 'MCP'
+description: 'Use AgentPhone from any MCP-compatible AI tool'
+icon: 'plug'
+---
+
+AgentPhone provides a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that lets you manage phone numbers, make calls, read SMS, and control agents directly from your AI-powered editor or assistant.
+
+## What is MCP?
+
+The Model Context Protocol is an open standard that allows AI tools to connect to external services. With the AgentPhone MCP server, any MCP-compatible tool can access your phone infrastructure through natural language.
+
+## Supported tools
+
+<CardGroup cols={3}>
+  <Card title="Claude Code" icon="terminal" href="/integrations/claude-code">
+    Claude Code CLI and Claude Desktop
+  </Card>
+  <Card title="Cursor" icon="arrow-pointer" href="/integrations/cursor">
+    Cursor IDE with MCP support
+  </Card>
+  <Card title="Windsurf" icon="water" href="/integrations/windsurf">
+    Windsurf's Cascade AI assistant
+  </Card>
+</CardGroup>
+
+## Quick setup
+
+All integrations use the same MCP server package:
+
+```bash
+npx -y agentphone-mcp
+```
+
+You'll need an [AgentPhone API key](https://agentphone.to) set as the `AGENTPHONE_API_KEY` environment variable. See the individual integration pages above for tool-specific setup instructions.
+
+## Available MCP tools
+
+Once connected, your AI tool has access to the following operations:
+
+| Tool | Description |
+|------|-------------|
+| `list_numbers` | List all phone numbers in your account |
+| `buy_number` | Purchase a new number (US, CA) |
+| `release_number` | Release a number back to the carrier pool |
+| `list_agents` | List all agents |
+| `create_agent` | Create a new agent |
+| `get_agent` | Get agent details and attached numbers |
+| `attach_number` | Attach a number to an agent |
+| `make_call` | Initiate an outbound call (forwarded to your webhook) |
+| `make_conversation_call` | Make an AI-driven call with a topic — no webhook needed |
+| `get_call` | Get call details and transcript |
+| `list_calls` | List recent calls |
+| `get_messages` | Get SMS messages for a number |
+| `list_conversations` | List SMS conversation threads |
+| `get_conversation` | Get a conversation with message history |
+| `get_webhook` | Get current webhook configuration |
+| `set_webhook` | Configure your webhook URL |
+| `delete_webhook` | Remove your webhook |
+
+<Note>
+  `make_conversation_call` uses AgentPhone's built-in LLM to hold an autonomous conversation based on the `topic` you provide. No server or webhook setup needed.
+</Note>

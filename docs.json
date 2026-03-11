@@ -19,10 +19,10 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Docs",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting Started",
+            "group": "Get Started",
             "pages": [
               "index",
               "api-reference/quickstart",
@@ -56,6 +56,15 @@
             ]
           },
           {
+            "group": "Integrations",
+            "pages": [
+              "integrations/mcp",
+              "integrations/claude-code",
+              "integrations/cursor",
+              "integrations/windsurf"
+            ]
+          },
+          {
             "group": "FAQ",
             "pages": [
               "api-reference/faq"
@@ -64,14 +73,23 @@
         ]
       },
       {
-        "tab": "AI Tools",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "MCP Integrations",
+            "group": "API Reference",
             "pages": [
-              "ai-tools/claude-code",
-              "ai-tools/cursor",
-              "ai-tools/windsurf"
+              "api-reference/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog"
             ]
           }
         ]
